@@ -1,7 +1,20 @@
+<!-- res/values-night/themes.xml -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Ejemplo_Fragmentos" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+
+    <!-- Base application theme (Night) -->
+    <style name="Theme.AuroraBrillante" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Colores de fondo y barra de acción -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+
+        <!-- Personalización de texto -->
+        <item name="android:textColorPrimary">@color/colorTextPrimary</item>
+        <item name="android:textColorSecondary">@color/colorTextSecondary</item>
+
+        <!-- Estilo de botones -->
+        <item name="buttonStyle">@style/Widget.MaterialComponents.Button</item>
     </style>
+
 </resources>

@@ -1,5 +1,6 @@
 package com.example.ejemplo_fragmentos
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -19,20 +20,43 @@ import android.widget.TextView
  */
 class Fragmento_A : Fragment() {
     lateinit var mitextview:TextView
+    var num_veces=0
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.i("ejemplo_fragmento","Fragmento_A_OnAttach")
+    }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("clave","dato")
+        Log.i("ejemplo_fragmento","Se guarda el estado del fragmentoA")
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.i("ejemplo_fragmento","Fragmento_A_OnCreate")
-
+        if(savedInstanceState==null)
+        {
+            Log.i("ejemplo_fragmento","El bundle del fragment es vacio")
+        }
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        Log.i("ejemplo_fragmento","Fragmento_A_OnPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.i("ejemplo_fragmento","Fragmento_A_OnStop")
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

@@ -11,18 +11,42 @@
         android:id="@+id/fragmentContainerView"
 
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="650dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:background="?attr/colorPrimary"
+
+        android:elevation="6dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView" />
+       >
+
+        <ImageButton
+            android:id="@+id/casa"
+            android:layout_width="0dp"
+            android:background="@color/colorSecondary"
+            android:layout_marginHorizontal="48dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/reshot_icon_home_uknyqce6b2" />
+
+        <ImageButton
+            android:id="@+id/libro"
+            android:layout_width="0dp"
+            android:background="@color/colorSecondary"
+            android:layout_marginHorizontal="48dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+
+           android:src="@drawable/reshot_icon_open_book_lfudnzry6s" />
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
