@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.ejemplo_fragmentos.databinding.FragmentFragmentoABinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,7 +22,7 @@ import android.widget.TextView
 class Fragmento_A : Fragment() {
     lateinit var mitextview:TextView
     var num_veces=0
-
+    lateinit var mibiding:FragmentFragmentoABinding
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -62,6 +63,7 @@ class Fragmento_A : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         Log.i("ejemplo_fragmento","Fragmento_A_OnCreateView")
+        mibiding=FragmentFragmentoABinding.inflate(inflater)
 
         // Inflate the layout for this fragment
        var v= inflater.inflate(R.layout.fragment_fragmento__a, container, false )

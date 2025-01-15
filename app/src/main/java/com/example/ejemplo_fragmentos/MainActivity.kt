@@ -29,6 +29,7 @@ var fragment_home:Fragmento_A?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mibinding=ActivityMainBinding.inflate(layoutInflater)
+        Log.i("estadoActivity_ejemplo_fragmento","La actividad esta en OnCreate $savedInstanceState")
         enableEdgeToEdge()
         setContentView(mibinding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -54,17 +55,39 @@ var fragment_home:Fragmento_A?=null
 
 
     }*/
-        //Cargo el fragmento A, pero antes instanciare el objeto
-        if(this.fragment_home==null)
+        if(savedInstanceState==null) {
+            //Con esto consigo que si la actividad se destruya por una rotación
+            //la actividad automaticamente restaure todos los fragmentos añadidos
+            //a fragmentManager
+            //Cargo el fragmento A, pero antes instanciare el objeto
+            if (this.fragment_home == null) {
+                this.fragment_home = Fragmento_A()
+                Log.i("ejemplo_fragmento", "Instancio el fragmentoA")
+            }
+            Log.i(
+                "estado_ejemplo_fragmento",
+                "El estado es ${this.fragment_home!!.lifecycle.currentState}"
+            )
+            supportFragmentManager.commit {
+                add(R.id.fragmentContainerView, fragment_home!!)
+            }
+        }
+        else
         {
-            this.fragment_home=Fragmento_A()
-            Log.i("ejemplo_fragmento","Instancio el fragmentoA")
+            //Si entramos por aqui significa que la actividad ya se habría creado anteriormente
+            //y por lo tanto se viene de una destrucción de la actividad, por ejemplo, por rotar la pantalla
+            //Dado que la actividad mantiene los fragmentos que tuviera añadidos (add o replace) en
+            //supporFragmentManager.fragments, podríamos restaurar la instancia de los fragments que ahora es
+            //null, pero en esta aplicación solamente podremos restaurar el último que hubieramos añadido
+            // o remplazado, podemos comprobar el tipo de clase referenciado con
+            //supportFragmentManager.fragments[posicion]::clas.simpleName
+            //Ahora bien, lo ideal sería que las instancias de los Fragments estuvieran en un MutableLiveData
+            // de esta forma daria igual que el ciclo de vida de la actividad se destruyera.
+            Log.i("ejemplo_fragmento_actividad","La actividad regresa de una recuperacion")
+
         }
-        Log.i("estado_ejemplo_fragmento","El estado es ${this.fragment_home!!.lifecycle.currentState}")
-        supportFragmentManager.commit {
-            add(R.id.fragmentContainerView,fragment_home!!)
-        }
-        //Dado que lo anterior no es inmediato voy a definir en un hilo nuevo
+        //Dado
+            // que lo anterior no es inmediato voy a definir en un hilo nuevo
         //la espera para comprobar que ya se ha cambiado de estado
      /*   GlobalScope.launch {
 
@@ -81,7 +104,7 @@ var fragment_home:Fragmento_A?=null
         }*/
 
         findViewById<FragmentContainerView>(R.id.fragmentContainerView).setOnClickListener {
-            if(fragmento_cargado_A)
+          /*  if(fragmento_cargado_A)
             {
                 //Cargo el fragmento B
                 supportFragmentManager.commit {
@@ -104,20 +127,40 @@ var fragment_home:Fragmento_A?=null
             }
 
             fragmento_cargado_A=!fragmento_cargado_A
-
+*/
 
 
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        Log.i("estadoActivity_ejemplo_fragmento","La actividad esta en OnStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("estadoActivity_ejemplo_fragmento","La actividad esta en OnDestroy")
+    }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.i("estadoActivity_ejemplo_fragmento","La actividad se guarda su estado")
+    }
+
     private fun inicializar_Componentes() {
         mibinding.casa.setOnClickListener {
-            //Compruebo si el fragmento esta definido
-            if(fragment_home==null) {  //El fragmento home no esta definido, lo instancio
-                fragment_home = Fragmento_A()
-            }
+            //Todo esto se podría cambiar por un patron Singleton
+            //Compruebo si el fragmento esta definido y sino lo instacio,
+            //esto se podría cambiar por un patron Singleton
+            fragment_home=fragment_home?:Fragmento_A()
             supportFragmentManager.commit {
-                    replace(R.id.fragmentContainerView,fragment_home!!)
+                setReorderingAllowed(true)
+                /* Opcion1.- En vez de remplazar voy a borrar el que tenga y añadir este
+                 fragment_book?.let { remove(it) }
+                 add(R.id.fragmentContainerView,fragment_home!!) */
+
+                /*Opcion2.- Remplazo en vez de borrar y añadir, al final es lo mismo */
+                replace(R.id.fragmentContainerView,fragment_home!!)
                     setTransition(FragmentTransaction.TRANSIT_FRAGMENT_MATCH_ACTIVITY_CLOSE)
                 }
 
@@ -125,11 +168,10 @@ var fragment_home:Fragmento_A?=null
 
         }
         mibinding.libro.setOnClickListener {
-            if(fragment_book==null)
-            {
-                fragment_book= Fragmento_B()
-            }
+            //Compruebo si el fragmento tiene instancia creada, sino instancio
+           fragment_book=fragment_book?: Fragmento_B()
             supportFragmentManager.commit {
+                setReorderingAllowed(true)
                 replace(R.id.fragmentContainerView,fragment_book!!)
                 setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             }
